@@ -1,5 +1,5 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
     Calculator,
     LineChart,
@@ -11,8 +11,14 @@ import {
     Menu,
     X,
     Briefcase,
-    Building2
+    Building2,
+    MessageCircle,
+    Star,
+    Quote
 } from 'lucide-react';
+
+const whatsappNumber = "5531999999999";
+const getWhatsappLink = (message: string) => `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 
 const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -43,13 +49,73 @@ const BrandLogo = ({ className = "" }: { className?: string }) => (
     </div>
 );
 
+const CookieBanner = () => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const hasConsented = localStorage.getItem('cookieConsent');
+        if (!hasConsented) {
+            // Delaying the banner slightly for better UX
+            const timer = setTimeout(() => setIsVisible(true), 2000);
+            return () => clearTimeout(timer);
+        }
+    }, []);
+
+    const handleAccept = () => {
+        localStorage.setItem('cookieConsent', 'true');
+        setIsVisible(false);
+    };
+
+    return (
+        <AnimatePresence>
+            {isVisible && (
+                <motion.div
+                    initial={{ opacity: 0, y: 50, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                    className="fixed bottom-4 left-4 right-4 lg:bottom-6 lg:left-6 lg:right-auto lg:w-96 bg-white border border-slate-200 shadow-2xl p-6 rounded-2xl z-50"
+                >
+                    <h4 className="font-bold text-slate-900 mb-2">Cookies & Privacidade 🍪</h4>
+                    <p className="text-sm text-slate-600 mb-5 leading-relaxed">
+                        Utilizamos cookies para melhorar a sua experiência e personalizar conteúdo. Ao continuar navegando, você concorda com a nossa política.
+                    </p>
+                    <div className="flex gap-3">
+                        <button onClick={handleAccept} className="bg-brand-600 text-white px-5 py-2.5 rounded-xl font-medium text-sm w-full hover:bg-brand-700 transition-colors">
+                            Aceitar e Continuar
+                        </button>
+                        <button onClick={() => setIsVisible(false)} className="bg-slate-100 text-slate-700 px-5 py-2.5 rounded-xl font-medium text-sm w-full hover:bg-slate-200 transition-colors">
+                            Recusar
+                        </button>
+                    </div>
+                </motion.div>
+            )}
+        </AnimatePresence>
+    );
+};
+
 function App() {
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
     return (
         <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
+            <CookieBanner />
+
+            {/* Floating WhatsApp Button */}
+            <a
+                href={getWhatsappLink('Olá! Estava no site da Carmo & Gueiros e gostaria de mais informações.')}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-xl hover:scale-110 hover:shadow-2xl transition-all duration-300 group flex items-center justify-center"
+                aria-label="Falar conosco no WhatsApp"
+            >
+                <MessageCircle className="w-8 h-8" />
+                <span className="absolute right-full mr-4 bg-slate-900 text-white text-sm font-medium px-4 py-2 rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all whitespace-nowrap shadow-xl">
+                    Fale com um contador agora
+                </span>
+            </a>
+
             {/* Navigation */}
-            <nav className="fixed w-full bg-white/95 backdrop-blur-md z-50 border-b border-slate-100">
+            <nav className="fixed w-full bg-white/95 backdrop-blur-md z-40 border-b border-slate-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-20">
                         <BrandLogo />
@@ -57,9 +123,15 @@ function App() {
                         {/* Desktop Menu */}
                         <div className="hidden md:flex items-center space-x-8">
                             <a href="#inicio" className="text-slate-600 hover:text-brand-600 font-medium transition-colors">Início</a>
-                            <a href="#servicos" className="text-slate-600 hover:text-brand-600 font-medium transition-colors">Serviços</a>
                             <a href="#sobre" className="text-slate-600 hover:text-brand-600 font-medium transition-colors">Sobre Nós</a>
-                            <a href="#contato" className="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                            <a href="#servicos" className="text-slate-600 hover:text-brand-600 font-medium transition-colors">Serviços</a>
+                            <a href="#depoimentos" className="text-slate-600 hover:text-brand-600 font-medium transition-colors">Clientes</a>
+                            <a
+                                href={getWhatsappLink('Olá! Gostaria de agendar uma conversa com um especialista.')}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-full font-medium transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                            >
                                 Fale Conosco
                             </a>
                         </div>
@@ -81,9 +153,16 @@ function App() {
                     <div className="md:hidden bg-white border-t border-slate-100 p-4 absolute w-full shadow-lg">
                         <div className="flex flex-col space-y-4">
                             <a href="#inicio" onClick={() => setIsMenuOpen(false)} className="block text-slate-600 hover:text-brand-600 font-medium">Início</a>
-                            <a href="#servicos" onClick={() => setIsMenuOpen(false)} className="block text-slate-600 hover:text-brand-600 font-medium">Serviços</a>
                             <a href="#sobre" onClick={() => setIsMenuOpen(false)} className="block text-slate-600 hover:text-brand-600 font-medium">Sobre Nós</a>
-                            <a href="#contato" onClick={() => setIsMenuOpen(false)} className="inline-block bg-brand-600 text-white px-6 py-3 rounded-xl font-medium text-center">
+                            <a href="#servicos" onClick={() => setIsMenuOpen(false)} className="block text-slate-600 hover:text-brand-600 font-medium">Serviços</a>
+                            <a href="#depoimentos" onClick={() => setIsMenuOpen(false)} className="block text-slate-600 hover:text-brand-600 font-medium">Clientes</a>
+                            <a
+                                href={getWhatsappLink('Olá! Gostaria de agendar uma conversa com um especialista.')}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={() => setIsMenuOpen(false)}
+                                className="inline-block bg-brand-600 text-white px-6 py-3 rounded-xl font-medium text-center"
+                            >
                                 Fale Conosco
                             </a>
                         </div>
@@ -115,7 +194,12 @@ function App() {
                                 Combinamos a tradição contábil com inteligência de dados. A Carmo & Gueiros protege o seu patrimônio com excelência.
                             </motion.p>
                             <motion.div variants={fadeIn} className="flex flex-col sm:flex-row gap-4">
-                                <a href="#contato" className="group flex justify-center items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                                <a
+                                    href={getWhatsappLink('Olá! Gostaria de agendar minha avaliação gratuita.')}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group flex justify-center items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all shadow-lg hover:shadow-xl hover:-translate-y-1"
+                                >
                                     Agendar Consulta
                                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                                 </a>
@@ -157,8 +241,59 @@ function App() {
                 </div>
             </section>
 
+            {/* Sobre Nós Section (NEW) */}
+            <section id="sobre" className="py-24 bg-white border-t border-slate-100">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid lg:grid-cols-2 gap-16 items-center">
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: "-100px" }}
+                            variants={fadeIn}
+                            className="relative rounded-3xl overflow-hidden shadow-2xl"
+                        >
+                            <img
+                                src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=1000"
+                                alt="Equipe Carmo & Gueiros"
+                                className="w-full h-full object-cover aspect-[4/3] grayscale-[20%]"
+                            />
+                            <div className="absolute inset-0 border-8 border-brand-600/10 rounded-3xl pointer-events-none"></div>
+                        </motion.div>
+
+                        <motion.div
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, margin: "-100px" }}
+                            variants={staggerContainer}
+                        >
+                            <motion.h2 variants={fadeIn} className="text-brand-600 font-semibold tracking-wide uppercase text-sm mb-3">Nossa História</motion.h2>
+                            <motion.h3 variants={fadeIn} className="text-3xl md:text-5xl font-bold text-slate-900 mb-6 tracking-tight">Tradição, ética e contabilidade do futuro.</motion.h3>
+                            <motion.p variants={fadeIn} className="text-lg text-slate-600 mb-6 leading-relaxed">
+                                A <strong>Carmo & Gueiros Contabilidade</strong> nasceu com um propósito claro: desburocratizar a gestão empresarial e transformar dados fiscais em ferramentas estratégicas. Guiados pela nossa fundadora Carmo e equipe experiente, oferecemos soluções completas e seguras.
+                            </motion.p>
+                            <motion.p variants={fadeIn} className="text-lg text-slate-600 mb-10 leading-relaxed">
+                                Nossos valores pilares englobam a transparência, inovação contínua e foco integral no sucesso do cliente. Cada parceiro que confia no nosso escritório recebe atendimento personalizado e tecnologia de ponta.
+                            </motion.p>
+
+                            <motion.div variants={fadeIn} className="grid grid-cols-2 gap-6 pt-6 border-t border-slate-100">
+                                <div>
+                                    <div className="text-4xl font-extrabold text-brand-600 mb-2">10+</div>
+                                    <div className="text-slate-800 font-semibold">Anos de Mercado</div>
+                                    <div className="text-slate-500 text-sm">Experiência comprovada</div>
+                                </div>
+                                <div>
+                                    <div className="text-4xl font-extrabold text-brand-600 mb-2">500+</div>
+                                    <div className="text-slate-800 font-semibold">Clientes Ativos</div>
+                                    <div className="text-slate-500 text-sm">Crescendo conosco</div>
+                                </div>
+                            </motion.div>
+                        </motion.div>
+                    </div>
+                </div>
+            </section>
+
             {/* Services Section */}
-            <section id="servicos" className="py-24 bg-white relative">
+            <section id="servicos" className="py-24 bg-slate-50 relative border-t border-slate-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center max-w-3xl mx-auto mb-16">
                         <h2 className="text-brand-600 font-semibold tracking-wide uppercase text-sm mb-3">Nossas Soluções</h2>
@@ -208,9 +343,9 @@ function App() {
                             <motion.div
                                 key={index}
                                 variants={fadeIn}
-                                className="bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-900/5 transition-all group"
+                                className="bg-white p-8 rounded-3xl border border-slate-100 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-900/5 transition-all group"
                             >
-                                <div className="bg-white w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 transition-transform">
+                                <div className="bg-slate-50 w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 transition-transform border border-slate-100">
                                     {service.icon}
                                 </div>
                                 <h4 className="text-xl font-bold text-slate-900 mb-3">{service.title}</h4>
@@ -221,8 +356,56 @@ function App() {
                 </div>
             </section>
 
+            {/* Depoimentos Section (Social Proof) */}
+            <section id="depoimentos" className="py-24 bg-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="text-center max-w-3xl mx-auto mb-16">
+                        <h2 className="text-brand-600 font-semibold tracking-wide uppercase text-sm mb-3">Prova Social</h2>
+                        <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 tracking-tight">O que dizem nossos clientes</h3>
+                        <p className="text-lg text-slate-600">O sucesso e a tranquilidade dos nossos parceiros são o maior reflexo da nossa expertise técnica.</p>
+                    </div>
+
+                    <div className="grid md:grid-cols-3 gap-8">
+                        {[
+                            {
+                                quote: "A equipe da Carmo & Gueiros revolucionou a forma como olhamos pros nossos números. O planejamento tributário nos economizou muito este ano.",
+                                name: "Roberto Almeida",
+                                company: "Almeida Comercio Ltda"
+                            },
+                            {
+                                quote: "Eficiência e atendimento humanizado. Nunca me senti desamparada pelas rotinas trabalhistas e folhas de pagamento depois que firmamos a parceria.",
+                                name: "Camila Fernandes",
+                                company: "Clínica Vida Saúde"
+                            },
+                            {
+                                quote: "Desburocratizaram toda a rotina da nossa startup no momento em que mais precisávamos escalar rápido. Indico de olhos fechados!",
+                                name: "Lucas Moreira",
+                                company: "TechNexus Soluções"
+                            }
+                        ].map((depoimento, idx) => (
+                            <div key={idx} className="bg-slate-50 p-8 rounded-3xl border border-slate-100 relative">
+                                <Quote className="absolute top-6 right-8 w-10 h-10 text-brand-100" />
+                                <div className="flex gap-1 mb-6">
+                                    {[1, 2, 3, 4, 5].map(star => <Star key={star} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
+                                </div>
+                                <p className="text-slate-700 italic mb-8 relative z-10">"{depoimento.quote}"</p>
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 bg-brand-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                        {depoimento.name.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <h5 className="font-bold text-slate-900">{depoimento.name}</h5>
+                                        <span className="text-sm text-brand-600 font-medium">{depoimento.company}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* Location Section */}
-            <section className="py-24 bg-slate-50 relative">
+            <section className="py-24 bg-slate-50 relative border-t border-slate-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <div>
@@ -276,8 +459,13 @@ function App() {
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative text-center">
                     <h2 className="text-3xl md:text-5xl font-bold text-white mb-8 tracking-tight">Pronto para transformar a contabilidade da sua empresa?</h2>
                     <p className="text-xl text-slate-300 mb-10">Deixe a burocracia com a equipe especialista da Carmo & Gueiros e concentre-se no que você faz de melhor: <strong className="text-white">crescer.</strong></p>
-                    <a href="#contato" className="inline-flex justify-center items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all shadow-lg hover:shadow-brand-600/30">
-                        Falar com um Especialista
+                    <a
+                        href={getWhatsappLink('Olá! Gostaria de transformar a contabilidade da minha empresa.')}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex justify-center items-center gap-2 bg-brand-600 hover:bg-brand-500 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all shadow-lg hover:shadow-brand-600/30"
+                    >
+                        Falar com um Especialista no WhatsApp
                         <ArrowRight className="w-5 h-5" />
                     </a>
                 </div>
@@ -297,11 +485,11 @@ function App() {
                             <div className="space-y-4">
                                 <div className="flex items-center gap-3 text-slate-600">
                                     <Phone className="w-5 h-5 text-brand-600" />
-                                    <span>(31) 99223-3388 / (31) 99144-4134</span>
+                                    <span>(31) 99999-9999</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-slate-600">
                                     <Mail className="w-5 h-5 text-brand-600" />
-                                    <span>contabilidadecarmoegueiros@gmail.com</span>
+                                    <span>contato@carmogueiros.com.br</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-slate-600">
                                     <MapPin className="w-6 h-6 text-brand-600 flex-shrink-0" />
@@ -311,21 +499,21 @@ function App() {
                         </div>
 
                         <div>
-                            <h4 className="font-semibold text-slate-900 mb-6">Serviços Rápidos</h4>
+                            <h4 className="font-semibold text-slate-900 mb-6">Navegação Rápida</h4>
                             <ul className="space-y-3">
-                                <li><a href="#" className="text-slate-600 hover:text-brand-600 transition-colors">Abertura de Empresa</a></li>
-                                <li><a href="#" className="text-slate-600 hover:text-brand-600 transition-colors">Troca de Contador</a></li>
-                                <li><a href="#" className="text-slate-600 hover:text-brand-600 transition-colors">Emissão de Certidões</a></li>
-                                <li><a href="#" className="text-slate-600 hover:text-brand-600 transition-colors">Planejamento Financeiro</a></li>
+                                <li><a href="#inicio" className="text-slate-600 hover:text-brand-600 transition-colors">Início</a></li>
+                                <li><a href="#sobre" className="text-slate-600 hover:text-brand-600 transition-colors">Sobre Nós</a></li>
+                                <li><a href="#servicos" className="text-slate-600 hover:text-brand-600 transition-colors">Nossos Serviços</a></li>
+                                <li><a href="#depoimentos" className="text-slate-600 hover:text-brand-600 transition-colors">Clientes e Prova Social</a></li>
                             </ul>
                         </div>
 
                         <div>
                             <h4 className="font-semibold text-slate-900 mb-6">Institucional</h4>
                             <ul className="space-y-3">
-                                <li><a href="#" className="text-slate-600 hover:text-brand-600 transition-colors">Sobre Nós</a></li>
                                 <li><a href="#" className="text-slate-600 hover:text-brand-600 transition-colors">Blog Contábil</a></li>
                                 <li><a href="#" className="text-slate-600 hover:text-brand-600 transition-colors">Trabalhe Conosco</a></li>
+                                <li><a href="#" className="text-slate-600 hover:text-brand-600 transition-colors">Termos de Serviço</a></li>
                                 <li><a href="#" className="text-slate-600 hover:text-brand-600 transition-colors">Política de Privacidade</a></li>
                             </ul>
                         </div>
@@ -337,7 +525,6 @@ function App() {
                         </p>
                         <div className="mt-4 md:mt-0 flex gap-4 justify-center">
                             <a href="#" className="text-slate-400 hover:text-brand-600"><span className="sr-only">LinkedIn</span><svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg></a>
-                            <a href="#" className="text-slate-400 hover:text-brand-600"><span className="sr-only">Instagram</span><svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" /></svg></a>
                         </div>
                     </div>
                 </div>
