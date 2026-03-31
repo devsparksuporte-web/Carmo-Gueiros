@@ -249,7 +249,7 @@ function App() {
                             <div className="space-y-4">
                                 <div className="flex items-center gap-3 text-slate-600">
                                     <Phone className="w-5 h-5 text-brand-600" />
-                                    <span>(11) 99999-9999 / (11) 3333-3333</span>
+                                    <span>(31) 99223-3388 / (31) 99144-4134</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-slate-600">
                                     <Mail className="w-5 h-5 text-brand-600" />
