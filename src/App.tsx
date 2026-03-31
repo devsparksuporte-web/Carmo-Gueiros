@@ -38,15 +38,7 @@ const staggerContainer = {
 
 const BrandLogo = ({ className = "" }: { className?: string }) => (
     <div className={`flex items-center gap-3 ${className}`}>
-        <div className="bg-brand-600 flex justify-center items-center w-12 h-12 rounded-[14px] shadow-sm flex-shrink-0 relative overflow-hidden">
-            <div className="flex flex-col items-center justify-center mt-0.5">
-                <span className="text-white font-extrabold text-[1.4rem] leading-none tracking-tight">C&G</span>
-                <span className="text-white text-[0.4rem] font-medium leading-none mt-[2px] tracking-wide">Contabilidade®</span>
-            </div>
-        </div>
-        <span className="text-2xl font-bold text-slate-900 dark:text-white hidden sm:block">
-            Carmo & Gueiros
-        </span>
+        <img src="/logo.png" alt="Carmo & Gueiros Contabilidade" className="h-12 md:h-14 w-auto object-contain drop-shadow-sm" />
     </div>
 );
 
