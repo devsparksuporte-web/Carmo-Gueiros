@@ -125,48 +125,31 @@ function App() {
                             </motion.div>
                         </motion.div>
 
-                        {/* Right Side Illustration / Abstract Visual */}
+                        {/* Right Side Image */}
                         <motion.div
                             initial={{ opacity: 0, scale: 0.9 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8, delay: 0.2 }}
-                            className="relative lg:h-[600px] flex justify-center items-center"
+                            className="relative lg:h-[600px] flex justify-center items-center w-full"
                         >
-                            <div className="absolute inset-0 bg-gradient-to-tr from-brand-100 to-slate-50 rounded-[3rem] transform rotate-3 scale-105 -z-10"></div>
-                            <div className="absolute inset-0 bg-white shadow-2xl rounded-[3rem] border border-slate-100 overflow-hidden flex flex-col justify-between p-8">
-                                {/* Mock UI for Visual Appeal */}
-                                <div className="flex justify-between items-center border-b border-slate-100 pb-4">
-                                    <div>
-                                        <div className="text-sm text-slate-500 font-medium">Balanço Patrimonial</div>
-                                        <div className="text-2xl font-bold text-slate-900">Resultado Consolidado</div>
-                                    </div>
-                                    <div className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
-                                        Auditoria em dia
-                                    </div>
-                                </div>
-                                <div className="space-y-4 my-8 flex-1">
-                                    {[1, 2, 3].map((_, i) => (
-                                        <div key={i} className="flex items-center gap-4">
-                                            <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center">
-                                                <Briefcase className="w-5 h-5 text-brand-600" />
-                                            </div>
-                                            <div className="flex-1">
-                                                <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden">
-                                                    <motion.div
-                                                        initial={{ width: 0 }}
-                                                        animate={{ width: `${Math.random() * 30 + 50}%` }}
-                                                        transition={{ duration: 1, delay: 0.5 + i * 0.2 }}
-                                                        className="h-full bg-brand-500 rounded-full"
-                                                    />
-                                                </div>
-                                            </div>
+                            <div className="absolute inset-0 bg-gradient-to-tr from-brand-100 to-slate-50 rounded-[3rem] transform rotate-2 scale-105 -z-10"></div>
+                            <div className="absolute inset-0 bg-white shadow-2xl rounded-[3rem] border-4 border-white overflow-hidden">
+                                <img
+                                    src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=1000"
+                                    alt="Consultoria Contábil"
+                                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-slate-900/0 to-transparent"></div>
+                                <div className="absolute bottom-8 left-8 right-8 bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-2xl">
+                                    <div className="flex items-center gap-4">
+                                        <div className="bg-brand-50 border border-brand-100 p-3 rounded-xl flex-shrink-0">
+                                            <LineChart className="w-6 h-6 text-brand-600" />
                                         </div>
-                                    ))}
-                                </div>
-                                <div className="bg-brand-600 rounded-2xl p-6 text-white isolate overflow-hidden relative">
-                                    <div className="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-brand-500 opacity-50 blur-2xl"></div>
-                                    <h3 className="font-semibold text-lg mb-2 z-10 relative">Gestão Tributária</h3>
-                                    <p className="text-brand-100 text-sm z-10 relative">Maior controle e conformidade com a legislação vigente.</p>
+                                        <div>
+                                            <h3 className="font-bold text-slate-900 text-lg">Estratégia e Decisão</h3>
+                                            <p className="text-sm text-slate-600 font-medium">Sua contabilidade no caminho do crescimento.</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </motion.div>
@@ -274,7 +257,7 @@ function App() {
                                 </div>
                                 <div className="flex items-center gap-3 text-slate-600">
                                     <MapPin className="w-6 h-6 text-brand-600 flex-shrink-0" />
-                                    <span>Sua Localização Aqui - SP</span>
+                                    <span>Avenida Delfino Francisco Xavier<br />Vale Jatobá, 283 - Belo Horizonte</span>
                                 </div>
                             </div>
                         </div>
