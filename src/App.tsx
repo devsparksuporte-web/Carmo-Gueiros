@@ -253,7 +253,7 @@ function App() {
                                 </div>
                                 <div className="flex items-center gap-3 text-slate-600">
                                     <Mail className="w-5 h-5 text-brand-600" />
-                                    <span>contato@carmogueiros.com.br</span>
+                                    <span>contabilidadecarmoegueiros@gmail.com</span>
                                 </div>
                                 <div className="flex items-center gap-3 text-slate-600">
                                     <MapPin className="w-6 h-6 text-brand-600 flex-shrink-0" />
