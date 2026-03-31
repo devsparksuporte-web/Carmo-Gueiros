@@ -246,7 +246,7 @@ function App() {
                                     </div>
                                     <div>
                                         <h4 className="font-semibold text-slate-900 text-lg">Atendimento</h4>
-                                        <p className="text-slate-600 mt-1">(31) 99999-9999 <br />Segunda a Sexta, das 08h às 18h</p>
+                                        <p className="text-slate-600 mt-1">(31) 99223-3388 / (31) 99144-4134 <br />Segunda a Sexta, das 08h às 18h</p>
                                     </div>
                                 </div>
                             </div>
