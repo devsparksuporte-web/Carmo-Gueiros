@@ -221,6 +221,54 @@ function App() {
                 </div>
             </section>
 
+            {/* Location Section */}
+            <section className="py-24 bg-slate-50 relative">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h2 className="text-brand-600 font-semibold tracking-wide uppercase text-sm mb-3">Onde Estamos</h2>
+                            <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6 tracking-tight">Venha tomar um café com a gente.</h3>
+                            <p className="text-lg text-slate-600 mb-8">Nossa sede está localizada em Belo Horizonte, com fácil acesso e excelente infraestrutura para receber você e entender as necessidades do seu negócio.</p>
+
+                            <div className="space-y-6">
+                                <div className="flex items-start gap-4">
+                                    <div className="bg-white p-3 rounded-xl flex-shrink-0 mt-1 shadow-sm border border-slate-100">
+                                        <MapPin className="w-6 h-6 text-brand-600" />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-slate-900 text-lg">Endereço Principal</h4>
+                                        <p className="text-slate-600 mt-1">Avenida Delfino Francisco Xavier, 283<br />Vale Jatobá - Belo Horizonte, MG</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-4">
+                                    <div className="bg-white p-3 rounded-xl flex-shrink-0 mt-1 shadow-sm border border-slate-100">
+                                        <Phone className="w-6 h-6 text-brand-600" />
+                                    </div>
+                                    <div>
+                                        <h4 className="font-semibold text-slate-900 text-lg">Atendimento</h4>
+                                        <p className="text-slate-600 mt-1">(31) 99999-9999 <br />Segunda a Sexta, das 08h às 18h</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="relative h-[400px] lg:h-[500px] w-full max-w-2xl mx-auto rounded-3xl overflow-hidden shadow-2xl border border-slate-100 ring-4 ring-white">
+                            <iframe
+                                src="https://www.google.com/maps?q=Avenida+Delfino+Francisco+Xavier,+283,+Vale+Jatobá,+Belo+Horizonte&output=embed"
+                                width="100%"
+                                height="100%"
+                                style={{ border: 0 }}
+                                allowFullScreen={false}
+                                loading="lazy"
+                                referrerPolicy="no-referrer-when-downgrade"
+                                title="Mapa da Localização Carmo & Gueiros"
+                                className="absolute inset-0 grayscale-[20%] hover:grayscale-0 transition-all duration-500"
+                            ></iframe>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* CTA Section */}
             <section className="bg-slate-900 py-24 relative overflow-hidden">
                 <div className="absolute inset-0 bg-brand-600 opacity-20 transform -skew-y-12"></div>
